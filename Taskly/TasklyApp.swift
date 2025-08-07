@@ -9,9 +9,20 @@ import SwiftUI
 
 @main
 struct TasklyApp: App {
+    @StateObject var coordinator = AppCoordinator()
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            NavigationStack(path: $coordinator.path) {
+                coordinator.destination(for: .tasks) // root view
+                    .navigationDestination(for: Destination.self) { destination in
+                        coordinator.destination(for: destination)
+                    }
+                    .fullScreenCover(item: $coordinator.fullScreenCoverItem) { fullScreenCoverItem in
+                        coordinator.fullScreenCover(for: fullScreenCoverItem)
+                    }
+            }
+            .environmentObject(coordinator)
         }
     }
 }

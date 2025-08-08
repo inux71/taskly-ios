@@ -15,7 +15,7 @@ struct TasklyApp: App {
         WindowGroup {
             NavigationStack(path: $coordinator.path) {
                 coordinator.destination(for: .tasks) // root view
-                    .navigationDestination(for: Destination.self) { destination in
+                    .navigationDestination(for: AppDestination.self) { destination in
                         coordinator.destination(for: destination)
                     }
                     .fullScreenCover(item: $coordinator.fullScreenCoverItem) { fullScreenCoverItem in

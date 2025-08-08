@@ -8,7 +8,10 @@
 import Foundation
 import SwiftUI
 
-class AppCoordinator: ObservableObject {
+class AppCoordinator: ObservableObject, Navigable, FullScreenCoverable {
+    typealias Destination = AppDestination
+    typealias FullScreenCoverItem = AppFullScreenCoverItem
+    
     @Published var path = NavigationPath()
     @Published var fullScreenCoverItem: FullScreenCoverItem? = nil
     
@@ -17,6 +20,8 @@ class AppCoordinator: ObservableObject {
     }
     
     func navigateBack() {
+        guard !self.path.isEmpty else { return }
+        
         self.path.removeLast()
     }
     
@@ -24,11 +29,11 @@ class AppCoordinator: ObservableObject {
         self.fullScreenCoverItem = item
     }
     
-    func dismissFullScreenCover() {
+    func dismiss() {
         self.fullScreenCoverItem = nil
     }
     
-    @ViewBuilder func destination(for destination: Destination) -> some View {
+    @ViewBuilder func destination(for destination: AppDestination) -> some View {
         switch destination {
         case .tasks:
             TasksTabView()
@@ -37,10 +42,10 @@ class AppCoordinator: ObservableObject {
         }
     }
     
-    @ViewBuilder func fullScreenCover(for item: FullScreenCoverItem) -> some View {
+    @ViewBuilder func fullScreenCover(for item: AppFullScreenCoverItem) -> some View {
         switch item {
         case .addTask:
-            AddTaskView()
+            AddTaskRootView()
         }
     }
 }

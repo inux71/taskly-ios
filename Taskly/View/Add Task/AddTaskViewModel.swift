@@ -8,6 +8,8 @@
 import Foundation
 
 class AddTaskViewModel: ObservableObject {
+    private let dataManager = DataManager.shared
+    
     @Published var title: String = ""
     @Published var selectedPriority: TaskPriority = .medium
     @Published var selectedDate: Date = Date()
@@ -20,5 +22,16 @@ class AddTaskViewModel: ObservableObject {
     var saveButtonDisabled: Bool {
         title.trimmingCharacters(in: .whitespacesAndNewlines)
             .isEmpty
+    }
+    
+    func saveTask() {
+        let task = Task(
+            title: title,
+            priority: selectedPriority,
+            date: selectedDate,
+            notificationEnabled: notificationEnabled
+        )
+        
+        dataManager.insert(model: task)
     }
 }

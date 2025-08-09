@@ -61,7 +61,8 @@ struct AddTaskView: View {
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button("Save") {
-                    // TODO: save task
+                    viewModel.saveTask()
+                    
                     appCoordinator.dismiss()
                 }
                 .disabled(viewModel.saveButtonDisabled)
